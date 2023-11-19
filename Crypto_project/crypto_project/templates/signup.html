@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Signup Page</title>
+	<link rel="stylesheet" href="../../static/css/style.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Create Account</h1>
+		<form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+		</form>
+        <div class="signup">
+			<p>Already have an account? <a href="http://localhost:8000/login/login">Login</a></p>
+		</div>
+		<div class="error">
+		</div>
+	</div>
+</body>
+</html>

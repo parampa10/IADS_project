@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Page</title>
+	{% comment %} <link rel="stylesheet" href="../static/css/style.css"> {% endcomment %}
+</head>
+<body>
+	<div class="container">
+		<h1>Login</h1>
+		<form action="" method="POST">
+			{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>            
+		</form>
+
+        <div class="signup">
+			<p>Don't have an account? <a href="http://localhost:8000/login/signup">Sign up</a></p>
+		</div>
+	</div>
+</body>
+</html>
