@@ -1,9 +1,8 @@
 from django.shortcuts import redirect, render
 
 from login.forms import LoginForm, RegisterForm
-from login.models import UserDetails
+from login.models import UserDetails, CryptoCurrency
 from django.contrib.auth.hashers import check_password,make_password
-
 
 # Create your views here.
 def login(request):
@@ -36,7 +35,7 @@ def login(request):
             except UserDetails.DoesNotExist:
                 form.add_error(None, 'User does not exist')
     else:
-        print("1")
+        # print("1")
         form = LoginForm()
         return render(request,'login.html',{'form':form})
 
