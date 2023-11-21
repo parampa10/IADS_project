@@ -1,9 +1,9 @@
 .container {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
-    /*background-color: #333;*/
-    padding: 20px;
+    margin: auto;
+    background-color: #333;
+    padding: 0px;
     border-radius: 10px;
 
 }
@@ -12,6 +12,7 @@
 #crypto-table {
   width: 100%;
   border-collapse: collapse;
+  position: relative;
 }
 
 #crypto-table th,
@@ -23,11 +24,11 @@
 }
 
 #crypto-table th {
-  background-color: #eef4fa;
+  background-color: #274c77;
 }
 
 #crypto-table tr:hover {
-  background-color: #e6f1ff;
+  background-color: #a6b2c2;
 }
 
 .wishlist-btn {
@@ -45,7 +46,7 @@
 color: blue;
 }
 .navbar {
-    background-color: #333;
+    background-color: blue;
     overflow: hidden;
   }
 
