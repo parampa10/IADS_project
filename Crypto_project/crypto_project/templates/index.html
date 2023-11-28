@@ -211,74 +211,74 @@
     </header>
 
     <div class="row hide" id="highlight_section">
-      <div class="card col-sm m-4" style="width: 18rem;">
+      <div class="card col-sm m-4" style="display:flex;">
         
-        <div class="card-body">
+        <div class="card-body" style="padding:0;">
           <h5 class="card-title"><h2 style="margin: 0"><span class="fire-icon">🔥</span> Trending </h2></h5>
           <div>
             
-            <ol>
+            <div>
               {% for item in top_list%}
-                <li class="m-1" style="display:flex;">
-                  <p class="m-3" ><img src="{{ item.image }}" alt="{{ item.symbol }}" width="30" height="30"></p>
-                  <p class="m-3" style="font-size:15px;font-weight:bold;">{{item.name}}</p>
-                  <p class="m-3" style="font-size:15px;">{{item.current_price}}</p> 
+                <div class="m-3" style="display:flex;">
+                  <p class="m-1" ><img src="{{ item.image }}" alt="{{ item.symbol }}" width="30" height="30"></p>
+                  <p class="m-1" style="font-size:15px;font-weight:bold;">{{item.name}}</p>
+                  <p class="m-1" style="font-size:15px;">{{item.current_price}}</p> 
                   {% if item.price_change_percentage_24h > 0 %}
-                    <p class="m-3" style="color: rgb(0, 177, 0);  ">+ {{item.price_change_percentage_24h}}%</p>
+                    <p class="m-1" style="color: rgb(0, 177, 0);  ">+ {{item.price_change_percentage_24h}}%</p>
                   {% else %}
-                    <p class="m-3" style="color: rgb(216, 75, 75);  ">{{item.price_change_percentage_24h}}%</p>
+                    <p class="m-1" style="color: rgb(216, 75, 75);  ">{{item.price_change_percentage_24h}}%</p>
                   {% endif %}
-                </li>
+                </div>
               {% endfor %}
-            </ol>
+            </div>
             
           </div>
         </div>
       </div>
-      <div class="card col-sm m-4" style="width: 18rem;">
+      <div class="card col-sm m-4" style="display:flex;">
         
-        <div class="card-body">
-          <h5 class="card-title"><h2><span style="font-size: 30px; margin-right: 10px; flex-shrink: 0;">⭐️</span>Top Rate Change</h2></h5>
+        <div class="card-body" style="padding:0;">
+          <h5 class="card-title"><h2 style="margin: 0"><span style="">⭐️</span>Top Rate Change</h2></h5>
           <div>
             
-            <ol>
+            <div >
               {% for item in top_change_list%}
-                <li class="m-1" style="display:flex;">
-                  <p class="m-3" ><img src="{{ item.image }}" alt="{{ item.symbol }}" width="30" height="30"></p>
-                  <p class="m-3" style="font-size:15px;font-weight:bold;">{{item.name}}</p>
-                  <p class="m-3" style="font-size:15px;">{{item.current_price}}</p> 
+                <div class="m-3" style="display:flex;">
+                  <p class="m-1" ><img src="{{ item.image }}" alt="{{ item.symbol }}" width="30" height="30"></p>
+                  <p class="m-1" style="font-size:15px;font-weight:bold;">{{item.name}}</p>
+                  <p class="m-1" style="font-size:15px;">{{item.current_price}}</p> 
                   {% if item.price_change_percentage_24h > 0 %}
-                    <p class="m-3" style="color: rgb(0, 177, 0);  ">+ {{item.price_change_percentage_24h}}%</p>
+                    <p class="m-1" style="color: rgb(0, 177, 0);  ">+ {{item.price_change_percentage_24h}}%</p>
                   {% else %}
-                    <p class="m-3" style="color: rgb(216, 75, 75);  ">{{item.price_change_percentage_24h}}%</p>
+                    <p class="m-1" style="color: rgb(216, 75, 75);  ">{{item.price_change_percentage_24h}}%</p>
                   {% endif %}
-                </li>
+                </div>
               {% endfor %}
-            </ol>
+            </div>
             
           </div>
         </div>
       </div>
-      <div class="card col-sm m-4" style="width: 18rem;">
+      <div class="card col-sm m-4" style="display:flex;">
         
-        <div class="card-body">
+        <div class="card-body" style="padding:0;">
           <h5 class="card-title"><h2 style="margin: 0"><span class="fire-icon">💰</span> Top Market Cap </h2></h5>
           <div>
             
-            <ol>
+            <div>
               {% for item in top_market_cap_list%}
-                <li class="m-1" style="display:flex;">
-                  <p class="m-3" ><img src="{{ item.image }}" alt="{{ item.symbol }}" width="30" height="30"></p>
-                  <p class="m-3" style="font-size:15px;font-weight:bold;">{{item.name}}</p>
-                  <p class="m-3" style="font-size:15px;">{{item.current_price}}</p> 
+                <div class="m-3" style="display:flex;">
+                  <p class="m-1" ><img src="{{ item.image }}" alt="{{ item.symbol }}" width="30" height="30"></p>
+                  <p class="m-1" style="font-size:15px;font-weight:bold;">{{item.name}}</p>
+                  <p class="m-1" style="font-size:15px;">{{item.current_price}}</p> 
                   {% if item.price_change_percentage_24h > 0 %}
-                    <p class="m-3" style="color: rgb(0, 177, 0);  ">+ {{item.price_change_percentage_24h}}%</p>
+                    <p class="m-1" style="color: rgb(0, 177, 0);  ">+ {{item.price_change_percentage_24h}}%</p>
                   {% else %}
-                    <p class="m-3" style="color: rgb(216, 75, 75);  ">{{item.price_change_percentage_24h}}%</p>
+                    <p class="m-1" style="color: rgb(216, 75, 75);  ">{{item.price_change_percentage_24h}}%</p>
                   {% endif %}
-                </li>
+                </div>
               {% endfor %}
-            </ol>
+            </div>
             
           </div>
         </div>
