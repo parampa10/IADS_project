@@ -181,8 +181,13 @@
           
           
           <ul class="nav my-2 my-lg-0">
-            <li><a href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-           <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+            {% if user_log %}
+              <li ><a href="{% url 'profile' %}"><span class="glyphicon glyphicon-user"></span> {{user.username}}</a></li>
+              <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            {% else %}
+              <li><a href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+              <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+            {% endif %}
            &nbsp;&nbsp;&nbsp;
             
           </ul>
