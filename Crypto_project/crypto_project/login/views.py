@@ -85,4 +85,4 @@ def user_profile(request):
         # Populate the form with the user's current profile information
         form = UserProfileForm(instance=user)
 
-    return render(request, 'profile', {'form': form, 'id': "profile-details", 'user': user})
+    return render(request, 'profile.html', {'form': form, 'id': "profile-details", 'user': user})

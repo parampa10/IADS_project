@@ -11,59 +11,7 @@
        th, td {
     text-align: left;
 }
-
-
     </style>
-
-    <!-- <script>
-
-        window.addEventListener('load', function(event) {
-            event.preventDefault();
-
-            var sections = ["profile-details", "account-security","wishlist","add-money","purchase-currency", "transaction-history", "purchase-history"];
-            var sectionId = "{{ id|escapejs }}";
-            {#var sectionId = {{ id }}#}
-
-
-            sections.forEach((i)=>{
-                element = document.getElementById(i);
-                console.log("element: ",element)
-                element.style.display = "none";
-            })
-
-            document.getElementById(sectionId).style.display = 'block';
-            {#window.location.href = "{% url 'CryptoCrackers:add_money' %}"#}
-
-              // Use the |escapejs filter to escape special characters
-            {#console.log("User:", username);#}
-
-        });
-        // Function to toggle the visibility of sections
-
-        function accountSecurity() {
-            var sections = ["profile-details", "account-security","wishlist","add-money","purchase-currency","sell", "transaction-history", "purchase-history"];
-
-
-            sections.forEach((index)=>{
-                document.getElementById(index).style.display = "none"
-
-            })
-
-
-
-            document.getElementById('account-security').style.display = "block"
-        }
-
-
-
-         function confirmDelete(){
-            var confirmation = confirm("Are you sure you want to delete your account? This action is irreversible.");
-            if (confirmation)
-                document.getElementById('delete-account-form').submit();
-
-         }
-
-    </script> -->
 </head>
 <body>
 <header>
@@ -74,20 +22,6 @@
 </nav>
 <main>
     <div class="profile-container">
-        <!-- <div class="sidebar">
-            <ul>
-                <li><a href="{% url 'CryptoCrackers:index' %}" >Back to Home</a></li>
-                <li><a href="{% url 'CryptoCrackers:profile' %}" >Profile Details</a></li>
-                <li><a  href="{% url 'CryptoCrackers:acc_sec' %}" >Account Security</a></li>
-                <li><a href="{% url 'CryptoCrackers:wishlist' %}" >Wishlist</a></li>
-                <li><a href="{% url 'CryptoCrackers:add_money' %}" >Add Money to Wallet</a></li>
-                <li><a href="{% url 'CryptoCrackers:purchase_currency' %}" >Purchase Crypto Currency</a></li>
-                <li><a href="{% url 'CryptoCrackers:sell_crypto' %}" >Sell Crypto Currency</a></li>
-                <li><a href="{% url 'CryptoCrackers:transaction_list' %}" >Transaction History</a></li>
-                <li><a href="{% url 'CryptoCrackers:purchasehistory_list' %}" >Purchase History</a></li>
-
-            </ul>
-        </div> -->
         <div class="content">
 
             {% if messages %}
@@ -121,126 +55,6 @@
                     <button class="save-button" type="submit">Save</button>
                 </form>
             </div>
-
-            <!-- <div id="account-security" style="display: none;">
-                <h1>Account Security</h1>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    {% if not google %}
-                        {{ form.as_p }}
-                        <button class="save-button" type="submit">Change Password</button>
-                    {% else %}
-                        <p>You cant change password since you logged in using google</p>
-                    {% endif %}
-                    <p style="color: green">{{ message }}</p>
-                    <p style="color: red">{{ err_message }}</p>
-
-{#                    <p>{{ error }}</p>#}
-                </form>
-
-
-                <h2>Delete Account</h2>
-                <p>Deleting your account is irreversible and will remove all your data.</p>
-                <form action="{% url 'CryptoCrackers:delete_account' %}" method="post">
-                    {% csrf_token %}
-                    <button class="delete-button" onclick="confirmDelete()" type="submit">Delete Account</button>
-                </form>
-            </div>
-
-            <div id="wishlist" style="display: none;"> -->
-            <!-- <script>
-
-                const cryptoChoices = JSON.parse('{{ crypto_choices_json|escapejs }}');
-
-                function calculateTotal() {
-                    const form = document.getElementById('purchaseForm');
-
-                    // Use the name attribute to select the elements
-                    const selectedCrypto = form.elements['cryptocurrency'];
-                    const quantityInput = form.elements['quantity'];
-
-                    // Check if the elements exist and continue with calculations
-                    if (selectedCrypto && quantityInput) {
-                        const selectedIndex = selectedCrypto.selectedIndex;
-
-                        if (selectedIndex !== -1) {
-                            const cryptoPrice = parseFloat(cryptoChoices[selectedIndex-1].price);
-                            const quantity = parseFloat(quantityInput.value);
-
-                            console.log('cryptoPrice:', cryptoPrice);
-                            console.log('quantity:', quantity);
-
-                            if (!isNaN(quantity)) {
-                                const totalAmount = cryptoPrice * quantity;
-                                console.log('totalAmount:', totalAmount);
-                                document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
-                            } else {
-                                alert('Please enter a valid quantity.');
-                            }
-                        } else {
-                            alert('Please select a cryptocurrency.');
-                        }
-                    }
-                }
-
-
-                  document.getElementById("purchaseForm").addEventListener("submit", function (event) {
-                      event.preventDefault(); // Prevent the default form submission
-
-                      // Use AJAX to submit the form data to your Django view
-                        const formData = new FormData(document.getElementById("purchaseForm"));
-
-                        fetch("{% url 'CryptoCrackers:purchase_currency' %}", {
-                            method: "POST",
-                            body: formData,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Display the message in a popup
-                            if (data.success) {
-                                alert("Purchase successful.");
-                                // Optionally, reset the form
-                                document.getElementById("purchaseForm").reset();
-                            } else {
-                                alert("Insufficient balance to make the purchase.");
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                    
-                        });
-                  });
-
-
-                document.getElementById("sell-form").addEventListener("submit",  function (event) {
-                    event.preventDefault();
-
-    
-                    const formData = new FormData(document.getElementById("sell-form"));
-
-                        fetch("{% url 'CryptoCrackers:sell_crypto' %}", {
-                            method: "POST",
-                            body: formData,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                        
-                            if (data.success) {
-                                alert("Sell successful.");
-                            
-                                document.getElementById("sell-form").reset();
-                            } else {
-                                alert("Trying to sell more quantity of coin compared to what you have");
-                                document.getElementById("sell-form").reset();
-
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                });
-            </script> -->
-
      </div>
     </div>
 
