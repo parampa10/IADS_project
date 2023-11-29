@@ -4,12 +4,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!--This is a Login Page-->
-	<title>Login Page</title>
+	<title>Login Page For user</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body class="bg-secondary d-flex align-items-center justify-content-center">
 	<div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">
 		<h1 class="text-center mb-4">Login</h1>
+		
 		<form action="" method="POST">
 			{% csrf_token %}
             {{ form.as_p }}
@@ -18,7 +19,7 @@
 
         <div class="alert alert-light text-center mt-3" role="alert">
 			<p>Don't have an account? <a href="http://localhost:8000/login/signup">Sign up</a></p>
-			<!--If dont have an account then-->
+			
 		</div>
 	</div>
 </body>

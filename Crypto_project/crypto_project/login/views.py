@@ -28,10 +28,12 @@ def login(request):
                     # Manually set the user's ID in the session to log them in
                     request.session['_user_id'] = user.id
                     print("#######################")
+
                     print(request.session['_user_id'])
-                    return redirect('index')
                     # # Redirect to the user's profile page
-                    # return HttpResponseRedirect(reverse('CryptoCrackers:profile'))
+                    return redirect('index')
+                    
+                    
                 else:
                     form.add_error(None, 'Invalid login credentials')
                     return render(request,'login.html',{'form':form})
@@ -205,6 +207,7 @@ def sell(request):
                 user_wallet.save()
                 user.save()
 
+                #change to render
                 return JsonResponse({'success': True})
             else:
                 return JsonResponse({'success': False})
