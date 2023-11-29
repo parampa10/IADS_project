@@ -9,5 +9,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('wallet/',views.wallet,name="wallet"),
     path('buy/',views.buy,name="buy"),
+    path('mycoins/',views.mycoins,name="mycoins"),
+    path('sell/',views.sell,name="sell"),
     
 ]

@@ -62,34 +62,22 @@
             
         <div class="content">
 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li
-                {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
+            {% if msg %}
+                <div class="alert alert-success">
+                    {{msg}}
+                </div>
             {% endif %}
+
         <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
-                <h1 class="text-center mb-4">Profile Details</h1>
-                <h1>{{ UserDetails.username }}</h1>
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    
-                     <div class="form-group">
-                        <label for="id_image">Upload ID Image:</label>
-                        <input type="file" value="{{ user.id_image.name }}" id="id_image" name="id_image" accept="image/*">
-                                {% if user.id_image %}
-                                    <p style="color: #4CAF50">ID verified successfully. You can proceed to buying and selling of currency</p>
-                                {% else %}
-                                    <p>Please upload id for verification to start Trading</p>
-                                {% endif %}
-
-                    </div>
-                    <button class="save-button" type="submit">Save</button>
-                </form>
+                <h1 class="text-center mb-4">My Coins</h1>
+                <h3>{{ UserDetails.username }}'s Coins</h3>
+                {% for key, value in coins_list %}
+                    Coin: {{ key }} - Quantity: {{ value }}<br>
+                {% endfor %}
+                <h4></h4>
+                
+                
             </div>
         </div>    
      </div>

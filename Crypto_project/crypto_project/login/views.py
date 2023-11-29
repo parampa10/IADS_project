@@ -1,10 +1,11 @@
+from decimal import Decimal
 import json
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
-from login.forms import AddMoneyForm, LoginForm, PurchaseForm, RegisterForm, UserProfileForm
+from login.forms import AddMoneyForm, LoginForm, PurchaseForm, RegisterForm, UserProfileForm, sellform
 from login.models import Purchase, Transaction, UserDetails, CryptoCurrency, Wallet
 from django.contrib.auth.hashers import check_password,make_password
 
@@ -58,6 +59,7 @@ def signup(request):
 
 def user_logout(request):
     request.session.delete()
+    request.session.flush()
     # messages.success(request,("You Were Logged Out Successfully!"))
     return redirect('index')
 
@@ -145,11 +147,11 @@ def buy(request):
                 user.cryptocurrencies = cryptocurrencies
                 user_wallet.save()
                 user.save()
-
+                msg="Coin Bought!"
                 return render(request, 'buy.html',
-                      {'form': form, 'balance': user_wallet.balance, 'crypto_choices_json': crypto_choices_json,
-                       'id': "purchase-currency", "user": user,'UserDetails':user_wallet.user,'total_amount': total_amount})
-                return JsonResponse({'success': True, 'total_amount': total_amount})
+                      {'form': form, 'balance': user_wallet.balance,'id': "purchase-currency", "user": user,
+                       'UserDetails':user_wallet.user,'total_amount': total_amount,'msg':msg})
+                
             else:
                 return JsonResponse({'success': False, 'error': 'Insufficient balance'})
         else:
@@ -168,6 +170,84 @@ def buy(request):
         return render(request, 'buy.html',
                       {'form': form, 'balance': user_wallet.balance, 'crypto_choices_json': crypto_choices_json,
                        'id': "purchase-currency", "user": user,'UserDetails':user_wallet.user})
+    
+
+def sell(request):
+    user_id = request.session.get('_user_id')
+    if not user_id:
+        return redirect('/login/login')
+
+    user_wallet, created = Wallet.objects.get_or_create(user_id=user_id)
+
+    if request.method == "POST":
+        form = sellform(user_id, request.POST)
+        if form.is_valid():
+            cryptocurrency = request.POST['cryptocurrencies']
+            quantity = request.POST['sell_quantity']
+            cryptmod = CryptoCurrency.objects.get(name=cryptocurrency)
+            total_amount = cryptmod.current_price_cad * Decimal(quantity)
+            user = UserDetails.objects.get(id=user_id)
+
+            # Get the current cryptocurrencies of the user
+            cryptocurrencies = user.cryptocurrencies
+            print(type(cryptocurrencies[cryptocurrency]))
+
+            if int(quantity) <= int(cryptocurrencies[cryptocurrency]):
+                user_wallet.balance += total_amount
+                # print(user_wallet.balance)
+                cryptocurrencies[cryptocurrency] = int(cryptocurrencies[cryptocurrency]) - int(quantity)
+                if int(cryptocurrencies[cryptocurrency]) <= 0:
+                    del cryptocurrencies[cryptocurrency]
+
+                user.cryptocurrencies = cryptocurrencies
+
+                # print(user.cryptocurrencies)
+                user_wallet.save()
+                user.save()
+
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False})
+
+        else:
+            return redirect('index')
+    else:
+        form = sellform(user_id)
+        user = UserDetails.objects.get(pk=user_id)
+        crypto_choices = [{'id': crypto.id, 'name': crypto.name, 'price': str(crypto.current_price_cad)} for crypto in
+                          CryptoCurrency.objects.all()]
+        crypto_choices_json = json.dumps(crypto_choices, cls=DjangoJSONEncoder)
+
+
+
+
+        return render(request, 'sell.html', {'UserDetails':user_wallet.user,'crypto_choices_json': crypto_choices_json,"user": user, 'form':form ,  'id': "sell"})
+
+
+def mycoins(request):
+
+    user_id = request.session.get('_user_id')
+    if not user_id:
+        return redirect('/login/')
+
+    user_wallet, created = Wallet.objects.get_or_create(user_id=user_id)
+
+    if request.method == "POST":
+        pass
+    else:
+        user = UserDetails.objects.get(pk=user_id)
+        crypto_choices = [{'id': crypto.id, 'name': crypto.name, 'price': str(crypto.current_price_cad)} for crypto in
+                          CryptoCurrency.objects.all()]
+        crypto_choices_json = json.dumps(crypto_choices, cls=DjangoJSONEncoder)
+
+        coins_list=user.cryptocurrencies.items()
+
+        for i in user.cryptocurrencies:
+            print(type(user.cryptocurrencies))
+
+        return render(request, 'mycoins.html', {'crypto_choices_json': crypto_choices_json,'coins_list':coins_list,"user": user,'id': "sell",'UserDetails':user_wallet.user})
+
+        
 
 def user_profile(request):
     user_id = request.session.get('_user_id')

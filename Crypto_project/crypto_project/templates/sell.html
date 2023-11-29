@@ -62,34 +62,30 @@
             
         <div class="content">
 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li
-                {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
+            {% if msg %}
+                <div class="alert alert-success">
+                    {{msg}}
+                </div>
             {% endif %}
+
         <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
-                <h1 class="text-center mb-4">Profile Details</h1>
-                <h1>{{ UserDetails.username }}</h1>
-                <form action="" method="post" enctype="multipart/form-data">
+                <h1 class="text-center mb-4">Sell Coin</h1>
+                <h3>{{ UserDetails.username }}'s Wallet</h3>
+                <h4>Current Money in Wallet:{{balance}}</h4>
+                
+                <form method="post" action="/login/sell/">
                     {% csrf_token %}
-                    {{form.as_p}}
-                    
-                     <div class="form-group">
-                        <label for="id_image">Upload ID Image:</label>
-                        <input type="file" value="{{ user.id_image.name }}" id="id_image" name="id_image" accept="image/*">
-                                {% if user.id_image %}
-                                    <p style="color: #4CAF50">ID verified successfully. You can proceed to buying and selling of currency</p>
-                                {% else %}
-                                    <p>Please upload id for verification to start Trading</p>
-                                {% endif %}
-
+                    <div>
+                        <label for="{{ form.cryptocurrencies.id_for_label }}">Cryptocurrencies:</label>
+                        {{ form.cryptocurrencies }}
                     </div>
-                    <button class="save-button" type="submit">Save</button>
-                </form>
+                    <div>
+                        <label for="{{ form.sell_quantity.id_for_label }}">Sell Quantity:</label>
+                        {{ form.sell_quantity }}
+                    </div>
+                    <button type="submit">Sell</button>
+                  </form>
             </div>
         </div>    
      </div>

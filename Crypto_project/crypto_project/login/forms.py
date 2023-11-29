@@ -54,3 +54,23 @@ class PurchaseForm(forms.ModelForm):
         total_amount = cryptocurrency.current_price_cad * quantity
         cleaned_data['total_amount'] = total_amount
         return cleaned_data
+    
+class sellform(forms.Form):
+
+    cryptocurrencies = forms.ChoiceField(choices=[])
+    sell_quantity = forms.IntegerField(required=True)
+
+    def __init__(self, user_id, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Check which user we need the keys
+        user_details = UserDetails.objects.get(id=user_id)
+
+        # Take data for that user
+        crypto_dict = user_details.cryptocurrencies
+
+        choices = [(key, f"{key} ({value})") for key, value in crypto_dict.items()]
+
+        self.fields['cryptocurrencies'].choices = choices
+
+        self.user_id = user_id
