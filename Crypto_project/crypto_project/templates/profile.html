@@ -1,99 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Metadata -->
     <meta charset="UTF-8">
-
     <title>My Profile</title>
+
+    <!-- External stylesheets -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="../../static/css/profile.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <style>
-            ul {
-              list-style-type: none;
-              margin: 0;
-              padding: 0;
-              overflow: hidden;
-              border: 1px solid #e7e7e7;
-              background-color: #f3f3f3;
-            }
-            
-            li {
-              float: left;
-            }
-            
-            li a {
-              display: block;
-              color: #666;
-              text-align: center;
-              padding: 14px 16px;
-              text-decoration: none;
-            }
-            
-            li a:hover:not(.active) {
-              background-color: #ddd;
-            }
-            
-            li a.active {
-              color: white;
-              background-color: #04AA6D;
-            }
 
-       th, td {
-    text-align: left;
-}
+    <!-- Internal styles -->
+    <style>
+        /* Style for navigation bar */
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #e7e7e7;
+            background-color: #f3f3f3;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: #666;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        li a.active {
+            color: white;
+            background-color: #04AA6D;
+        }
+
+        /* Style for table cells */
+        th, td {
+            text-align: left;
+        }
     </style>
 </head>
 <body class="bg-secondary d-flex align-items-center justify-content-center m-0 vh-100">
 
-<nav>
-    <!-- Your website navigation menu here -->
-</nav>
-<main>
-    <div class="sidebar">
-        <ul>
-            <li><a href="{% url 'index' %}" >Home</a></li>
-          </ul>
-    </div>
-    <div class="profile-container">
-            
-        <div class="content">
+    <!-- Website navigation menu -->
+    <nav>
+        <!-- Your website navigation menu here -->
+    </nav>
 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li
-                {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
+    <main>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'index' %}" >Home</a></li>
             </ul>
-            {% endif %}
-        <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
-            <div id="profile-details" style="display: block;">
-                <h1 class="text-center mb-4">Profile Details</h1>
-                <h1>{{ UserDetails.username }}</h1>
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    
-                     <div class="form-group">
-                        <label for="id_image">Upload ID Image:</label>
-                        <input type="file" value="{{ user.id_image.name }}" id="id_image" name="id_image" accept="image/*">
+        </div>
+
+        <!-- Profile container -->
+        <div class="profile-container">
+            <div class="content">
+                <!-- Display messages, if any -->
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!-- Profile details form -->
+                <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">
+                    <div id="profile-details" style="display: block;">
+                        <h1 class="text-center mb-4">Profile Details</h1>
+                        <h1>{{ UserDetails.username }}</h1>
+
+                        <!-- Edit profile form -->
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{form.as_p}}
+
+                            <!-- Upload ID Image section -->
+                            <div class="form-group">
+                                <label for="id_image">Upload ID Image:</label>
+                                <input type="file" value="{{ user.id_image.name }}" id="id_image" name="id_image" accept="image/*">
                                 {% if user.id_image %}
                                     <p style="color: #4CAF50">ID verified successfully. You can proceed to buying and selling of currency</p>
                                 {% else %}
-                                    <p>Please upload id for verification to start Trading</p>
+                                    <p>Please upload ID for verification to start Trading</p>
                                 {% endif %}
+                            </div>
 
+                            <!-- Save button -->
+                            <button class="save-button" type="submit">Save</button>
+                        </form>
                     </div>
-                    <button class="save-button" type="submit">Save</button>
-                </form>
+                </div>
             </div>
-        </div>    
-     </div>
-    </div>
+        </div>
+    </main>
 
-</main>
-<footer>
-
-</footer>
+    <!-- Footer -->
+    <footer>
+        <!-- Your footer content here -->
+    </footer>
 </body>
 </html>

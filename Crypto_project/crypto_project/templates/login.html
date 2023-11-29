@@ -3,22 +3,27 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!--This is a Login Page-->
+	<!-- This is a Login Page -->
 	<title>Login Page</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body class="bg-secondary d-flex align-items-center justify-content-center">
+	<!-- Login form container -->
 	<div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">
+		<!-- Login form title -->
 		<h1 class="text-center mb-4">Login</h1>
+		<!-- Login form -->
 		<form action="" method="POST">
 			{% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-secondary btn-block mt-3">Login</button>            
+            <!-- Login button -->
+            <button type="submit" class="btn btn-secondary btn-block mt-3">Login</button>
 		</form>
 
+        <!-- Alert for users without an account -->
         <div class="alert alert-light text-center mt-3" role="alert">
 			<p>Don't have an account? <a href="http://localhost:8000/login/signup">Sign up</a></p>
-			<!--If dont have an account then-->
+			<!-- If don't have an account then provide a link to the sign-up page -->
 		</div>
 	</div>
 </body>

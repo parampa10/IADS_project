@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Metadata -->
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Page Title -->
 	<title>Signup Page</title>
+
+    <!-- External Stylesheet -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<!--This is a class-->
+
+<!-- Body with Background and Flex Layout -->
 <body class="bg-secondary d-flex align-items-center justify-content-center">
+	<!-- Signup Form Container -->
 	<div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">
+		<!-- Title of the Signup Page -->
 		<h1 class="text-center mb-4">Create Account</h1>
+
+		<!-- Signup Form -->
 		<form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
+            <!-- Register Button -->
             <button type="submit" class="btn btn-secondary btn-block mt-3">Register</button>
 		</form>
+
+        <!-- Alert for Existing Users -->
         <div class="alert alert-light text-center mt-3" role="alert">
 			<p>Already have an account? <a href="http://localhost:8000/login/login">Login</a></p>
 		</div>
+
+		<!-- Error Section -->
 		<div class="error">
-			<!--In case if error exists-->
+			<!-- In case if an error exists, it can be displayed here -->
 		</div>
 	</div>
 </body>
