@@ -8,10 +8,10 @@ class UserDetails(models.Model):
     password = models.CharField(max_length=255,null=True, blank=True)
     first_name = models.CharField(max_length=255, null = True, blank=True)
     last_name = models.CharField(max_length=255, null = True, blank=True)
-    date_of_birth = models.DateField(blank=True, null = True)
     id_image = models.ImageField(upload_to='id_images/', null=True, blank=True)
     wishlist=models.JSONField(default=list,blank=True)
-    # avatar = models.ImageField(blank=True, null=True)
+    cryptocurrencies = models.JSONField(default=dict)
+    
 
     def _str_(self):
         return self.username
@@ -48,3 +48,28 @@ class CryptoCurrency(models.Model):
 
     def __str__(self):
         return self.name
+
+class Wallet(models.Model):
+    user = models.OneToOneField(UserDetails, on_delete=models.CASCADE)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.user.username}'s Wallet"
+
+class Transaction(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Transaction Details"
+
+class Purchase(models.Model):
+    user = models.ForeignKey(UserDetails, on_delete=models.CASCADE)
+    cryptocurrency = models.ForeignKey('CryptoCurrency', on_delete=models.CASCADE)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s purchase Details"

@@ -1,9 +1,11 @@
+import json
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-
-from login.forms import LoginForm, RegisterForm, UserProfileForm
-from login.models import UserDetails, CryptoCurrency
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
+from login.forms import AddMoneyForm, LoginForm, PurchaseForm, RegisterForm, UserProfileForm
+from login.models import Purchase, Transaction, UserDetails, CryptoCurrency, Wallet
 from django.contrib.auth.hashers import check_password,make_password
 
 # Create your views here.
@@ -59,6 +61,114 @@ def user_logout(request):
     # messages.success(request,("You Were Logged Out Successfully!"))
     return redirect('index')
 
+
+def wallet(request):
+
+    user_id = request.session.get('_user_id')
+    if not user_id:
+        # Redirect to login or handle the case where the user is not authenticated
+        return redirect('/login/login')
+
+    user_wallet, created = Wallet.objects.get_or_create(user_id=user_id)
+    
+
+    if request.method == "POST":
+        
+        form = AddMoneyForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            
+
+            user_wallet.balance += amount
+            user_wallet.save()
+
+            Transaction.objects.create(
+                user_id=user_id,
+                amount=amount,
+            )
+            msg="Money added successfully."
+            
+            form = AddMoneyForm()
+            return render(request, 'wallet.html',{'form': form, 'balance': user_wallet.balance,'UserDetails':user_wallet.user, "msg":msg})
+
+        else:
+            # Render the HTML with an error message
+            msg="Error adding money in wallet."
+            
+            form = AddMoneyForm()
+            return render(request, 'wallet.html',
+                          {'form': form, 'balance': user_wallet.balance,'UserDetails':user_wallet.user, "msg":msg})
+    else:
+        
+        form = AddMoneyForm()
+    
+        return render(request, 'wallet.html',{'form': form,'UserDetails':user_wallet.user,'balance':user_wallet.balance})
+
+def buy(request):
+    user_id = request.session.get('_user_id')
+    if not user_id:
+        # Redirect to login or handle the case where the user is not authenticated
+        return redirect('/login/login')
+
+    user_wallet, created = Wallet.objects.get_or_create(user_id=user_id)
+
+    if request.method == 'POST':
+        form = PurchaseForm(user_id, request.POST)
+
+        if form.is_valid():
+            cryptocurrency = form.cleaned_data['cryptocurrency']
+            quantity = form.cleaned_data['quantity']
+            total_amount = cryptocurrency.current_price_cad * quantity
+
+            if user_wallet.balance >= total_amount:
+                user_wallet.balance -= total_amount
+
+                Purchase.objects.create(
+                    user_id=user_id,
+                    cryptocurrency=cryptocurrency,
+                    quantity=quantity,
+                    total_amount=total_amount,
+                )
+                user = UserDetails.objects.get(id=user_id)
+
+                # Get the current cryptocurrencies of the user
+                cryptocurrencies = user.cryptocurrencies
+
+                # If the user has already bought this cryptocurrency, add the quantity to the existing quantity
+                if cryptocurrency.name in cryptocurrencies:
+                    cryptocurrencies[cryptocurrency.name] += int(quantity)
+                else:
+                    # If the user has not bought this cryptocurrency before, add it to the dictionary
+                    cryptocurrencies[cryptocurrency.name] = int(quantity)
+
+                # Save the updated cryptocurrencies dictionary
+                user.cryptocurrencies = cryptocurrencies
+                user_wallet.save()
+                user.save()
+
+                return render(request, 'buy.html',
+                      {'form': form, 'balance': user_wallet.balance, 'crypto_choices_json': crypto_choices_json,
+                       'id': "purchase-currency", "user": user,'UserDetails':user_wallet.user,'total_amount': total_amount})
+                return JsonResponse({'success': True, 'total_amount': total_amount})
+            else:
+                return JsonResponse({'success': False, 'error': 'Insufficient balance'})
+        else:
+            # Form is not valid, return JsonResponse with error details
+            return JsonResponse({'success': False, 'error': 'Invalid form data'})
+
+    else:
+        form = PurchaseForm(user_id)
+
+        # Fetch the cryptocurrency choices and pass them to the template as a JSON string
+        crypto_choices = [{'id': crypto.id, 'name': crypto.name, 'price': str(crypto.current_price_cad)} for crypto in
+                        CryptoCurrency.objects.all()]
+        crypto_choices_json = json.dumps(crypto_choices, cls=DjangoJSONEncoder)
+
+        user = UserDetails.objects.get(pk=user_id)
+        return render(request, 'buy.html',
+                      {'form': form, 'balance': user_wallet.balance, 'crypto_choices_json': crypto_choices_json,
+                       'id': "purchase-currency", "user": user,'UserDetails':user_wallet.user})
+
 def user_profile(request):
     user_id = request.session.get('_user_id')
     # Get user details from the retrieved user id
@@ -80,7 +190,7 @@ def user_profile(request):
 
             user.save()
 
-            return redirect('/userprofile/')  # Redirect to the user's profile page
+            return redirect('/login/userprofile/')  # Redirect to the user's profile page
     else:
         # Populate the form with the user's current profile information
         form = UserProfileForm(instance=user)
