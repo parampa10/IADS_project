@@ -6,22 +6,56 @@
     <title>My Profile</title>
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="stylesheet" href="../../static/css/profile.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
+            ul {
+              list-style-type: none;
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+              border: 1px solid #e7e7e7;
+              background-color: #f3f3f3;
+            }
+            
+            li {
+              float: left;
+            }
+            
+            li a {
+              display: block;
+              color: #666;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+            }
+            
+            li a:hover:not(.active) {
+              background-color: #ddd;
+            }
+            
+            li a.active {
+              color: white;
+              background-color: #04AA6D;
+            }
 
        th, td {
     text-align: left;
 }
     </style>
 </head>
-<body>
-<header>
-    <!-- Your website header content here -->
-</header>
+<body class="bg-secondary d-flex align-items-center justify-content-center m-0 vh-100">
+
 <nav>
     <!-- Your website navigation menu here -->
 </nav>
 <main>
+    <div class="sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}" >Home</a></li>
+          </ul>
+    </div>
     <div class="profile-container">
+            
         <div class="content">
 
             {% if messages %}
@@ -32,16 +66,14 @@
                 {% endfor %}
             </ul>
             {% endif %}
-
-
+        <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
-                <h1>Profile Details</h1>
+                <h1 class="text-center mb-4">Profile Details</h1>
                 <h1>{{ UserDetails.username }}</h1>
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{form.as_p}}
                     
-                
                      <div class="form-group">
                         <label for="id_image">Upload ID Image:</label>
                         <input type="file" value="{{ user.id_image.name }}" id="id_image" name="id_image" accept="image/*">
@@ -55,6 +87,7 @@
                     <button class="save-button" type="submit">Save</button>
                 </form>
             </div>
+        </div>    
      </div>
     </div>
 
