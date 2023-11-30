@@ -52,6 +52,7 @@
     <div class="sidebar">
         <ul>
             <li><a href="{% url 'index' %}" >Home</a></li>
+            <li><a href="/login/userprofile/" >Profile</a></li>
             <li><a href="/login/wallet" >Wallet</a></li>
             <li><a href="/login/buy" >Buy</a></li>
             <li><a href="/login/mycoins" >My Coins</a></li>
@@ -63,12 +64,17 @@
             
         <div class="content">
 
-            {% if msg %}
+            {% if msg_success %}
                 <div class="alert alert-success">
-                    {{msg}}
+                    {{msg_success}}
                 </div>
             {% endif %}
-
+            
+            {% if msg_fail %}
+                <div class="alert alert-danger">
+                    {{msg_fail}}
+                </div>
+            {% endif %}
         <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
                 <h1 class="text-center mb-4">Buy Coin</h1>

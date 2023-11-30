@@ -153,11 +153,17 @@ def buy(request):
                 msg = "Coin Bought!"
                 return render(request, 'buy.html',
                               {'form': form, 'balance': user_wallet.balance, 'id': "purchase-currency", "user": user,
-                               'UserDetails': user_wallet.user, 'total_amount': total_amount, 'msg': msg})
+                               'UserDetails': user_wallet.user, 'total_amount': total_amount, 'msg_success': msg})
             else:
-                return JsonResponse({'success': False, 'error': 'Insufficient balance'})
+                msg = "Insufficient Balance!"
+                return render(request, 'buy.html',
+                              {'form': form, 'balance': user_wallet.balance, 'id': "purchase-currency",
+                               'UserDetails': user_wallet.user, 'total_amount': total_amount, 'msg_fail': msg})
         else:
-            return JsonResponse({'success': False, 'error': 'Invalid form data'})
+            msg = "Invalid Data"
+            return render(request, 'buy.html',
+                              {'form': form, 'balance': user_wallet.balance, 'id': "purchase-currency",
+                               'UserDetails': user_wallet.user, 'total_amount': total_amount, 'msg_fail': msg})
     else:
         # Render the purchase form for GET requests
         form = PurchaseForm(user_id)
@@ -199,11 +205,16 @@ def sell(request):
                 user.cryptocurrencies = cryptocurrencies
                 user_wallet.save()
                 user.save()
+                
+                Purchase.objects.create(user_id=user_id, cryptocurrency=cryptmod, quantity=quantity,
+                                        total_amount=total_amount, type="sell")
 
-                return JsonResponse({'success': True})
+
+                msg = "Coin Sold!"
+                return render(request, 'sell.html', {'UserDetails': user_wallet.user,'msg_success': msg, "user": user, 'form': form, 'id': "sell"})
             else:
                 msg = "Enter Proper Quantity"
-                return render(request, 'sell.html', {'msg_fail': msg, "user": user, 'form': form, 'id': "sell"})
+                return render(request, 'sell.html', {'UserDetails': user_wallet.user,'msg_fail': msg, "user": user, 'form': form, 'id': "sell"})
         else:
             return redirect('index')
     else:
@@ -225,7 +236,8 @@ def history(request):
     if user_id:
         user = UserDetails.objects.get(pk=user_id)
         history = Purchase.objects.filter(user=user).order_by('-timestamp')
-        return render(request, 'payment_history.html', {'history': history, "id": "purchase-history"})
+        
+        return render(request, 'payment_history.html', {'user':user,'history': history, "id": "purchase-history"})
     else:
         msg = "Please Login in First!"
         return render(request, 'login.html', {'msg': msg})

@@ -52,6 +52,7 @@
     <div class="sidebar">
         <ul>
             <li><a href="{% url 'index' %}" >Home</a></li>
+            <li><a href="/login/userprofile/" >Profile</a></li>
             <li><a href="/login/wallet" >Wallet</a></li>
             <li><a href="/login/buy" >Buy</a></li>
             <li><a href="/login/mycoins" >My Coins</a></li>
@@ -74,7 +75,7 @@
                 <h1 class="text-center mb-4">My Coins</h1>
                 <h3>{{ UserDetails.username }}'s Coins</h3>
                 {% for key, value in coins_list %}
-                    Coin: {{ key }} - Quantity: {{ value }}<br>
+                    <div class="alert alert-info">Coin: {{ key }} &nbsp;&nbsp;&nbsp;&nbsp; Quantity: {{ value }}</div><br>
                 {% endfor %}
                 <h4></h4>
                 

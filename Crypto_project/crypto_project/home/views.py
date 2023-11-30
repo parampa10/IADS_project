@@ -17,11 +17,16 @@ def index(request):
     user = None
     user_log = False
     my_var = request.session.get('_user_id')
+    
+
     if "_user_id" in request.session :
         user_log = True
         id_value=request.session['_user_id']
         user = UserDetails.objects.get(id=id_value)
         wish_list = user.wishlist
+        user_cryptos=list(user.cryptocurrencies.keys())
+        my_coin=CryptoCurrency.objects.filter(name__in=user_cryptos)
+        return render(request,'index.html',{'my_coin':my_coin,'user':user,'coins':coin_list,'top_list':top_list,"top_change_list":top_change_list,"top_market_cap_list":top_market_cap_list,'wish_list': wish_list,'user_log': user_log})
     else:
         user_log = False
     return render(request,'index.html',{'user':user,'coins':coin_list,'top_list':top_list,"top_change_list":top_change_list,"top_market_cap_list":top_market_cap_list,'wish_list': wish_list,'user_log': user_log})

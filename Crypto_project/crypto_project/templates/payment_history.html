@@ -52,6 +52,7 @@
     <div class="sidebar">
         <ul>
             <li><a href="{% url 'index' %}" >Home</a></li>
+            <li><a href="/login/userprofile/" >Profile</a></li>
             <li><a href="/login/wallet" >Wallet</a></li>
             <li><a href="/login/buy" >Buy</a></li>
             <li><a href="/login/mycoins" >My Coins</a></li>
@@ -72,17 +73,17 @@
         <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
                 <h1 class="text-center mb-4">Coin Trades</h1>
-                <h3>{{ UserDetails.username }}'s Trades</h3>
+                <h3>{{ user.username }}'s Trades</h3>
                 <h4>All trades:</h4>
                 {% for h in history%}
                     {% if h.type == "sell" %}
                         <div class="alert alert-danger">
-                            Coin: {{h.Cryptocurrency}}   Quantity:{{h.quantity}}  action:{{h.type}}
+                            Coin: {{h.cryptocurrency}}   Quantity:{{h.quantity}}  action:{{h.type}}
                         </div>
                     {% endif %}
                     {% if h.type == "buy" %}
                         <div class="alert alert-success">
-                            Coin: {{h.Cryptocurrency}}   Quantity:{{h.quantity}}  action:{{h.type}}
+                            Coin: {{h.cryptocurrency}}   Quantity:{{h.quantity}}  action:{{h.type}}
                         </div>
                     {% endif %}
                 {% endfor %}

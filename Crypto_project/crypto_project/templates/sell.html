@@ -52,6 +52,7 @@
     <div class="sidebar">
         <ul>
             <li><a href="{% url 'index' %}" >Home</a></li>
+            <li><a href="/login/userprofile/" >Profile</a></li>
             <li><a href="/login/wallet" >Wallet</a></li>
             <li><a href="/login/buy" >Buy</a></li>
             <li><a href="/login/mycoins" >My Coins</a></li>
@@ -77,7 +78,7 @@
         <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
                 <h1 class="text-center mb-4">Sell Coin</h1>
-                <h3>{{ UserDetails.username }}'s Wallet</h3>
+                <h3>{{ user.username }}'s Wallet</h3>
                 <h4>Current Money in Wallet:{{balance}}</h4>
                 
                 <form method="post" action="/login/sell/">
