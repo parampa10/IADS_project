@@ -283,8 +283,8 @@ def user_profile(request):
                 user.id_image = request.FILES['id_image']
 
             user.save()
-
-            return redirect('/login/userprofile/')  # Redirect to the user's profile page
+            msg="User updated"
+            return render(request, 'profile.html', {'msg_success':msg,'form': form, 'id': "profile-details", 'user': user})  # Redirect to the user's profile page
     else:
         # Render user profile form for GET requests
         form = UserProfileForm(instance=user)

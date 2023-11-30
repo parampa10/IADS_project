@@ -4,7 +4,7 @@ from .models import CryptoCurrency, Purchase, Transaction, UserDetails
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
     password_confirm = forms.CharField(widget=forms.PasswordInput(), label='Confirm Password', required=True)
-
+    id_image=forms.ImageField(required=True)
     class Meta:
         model = UserDetails
         fields = ['first_name', 'last_name', 'username', 'id_image', 'email', 'password']

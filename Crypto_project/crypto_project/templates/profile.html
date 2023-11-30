@@ -64,6 +64,11 @@
             
         <div class="content">
 
+            {% if msg_success %}
+                <div class="alert alert-success">
+                    {{msg_success}}
+                </div>
+            {% endif %}
             {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
