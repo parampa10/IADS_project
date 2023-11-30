@@ -27,7 +27,7 @@ class UserProfileForm(forms.ModelForm):
         model = UserDetails()
         fields  = ['username', 'first_name', 'last_name']
 
-class AddMoneyForm(forms.ModelForm):
+class AddMoneyForm(forms.ModelForm):#for wallet
     class Meta:
         model = Transaction
         fields = ['amount']

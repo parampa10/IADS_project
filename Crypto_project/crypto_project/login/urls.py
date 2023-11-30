@@ -11,5 +11,6 @@ urlpatterns = [
     path('buy/',views.buy,name="buy"),
     path('mycoins/',views.mycoins,name="mycoins"),
     path('sell/',views.sell,name="sell"),
+    path('history/',views.history,name="history"),
     
 ]

@@ -70,6 +70,7 @@ class Purchase(models.Model):
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
+    type=models.CharField(max_length=5,default="buy")
 
     def __str__(self):
         return f"{self.user.username}'s purchase Details"

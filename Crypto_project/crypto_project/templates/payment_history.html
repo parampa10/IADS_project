@@ -71,13 +71,21 @@
 
         <div class="container mt-4 bg-light p-4 rounded shadow-sm mx-auto">    
             <div id="profile-details" style="display: block;">
-                <h1 class="text-center mb-4">My Coins</h1>
-                <h3>{{ UserDetails.username }}'s Coins</h3>
-                {% for key, value in coins_list %}
-                    Coin: {{ key }} - Quantity: {{ value }}<br>
+                <h1 class="text-center mb-4">Coin Trades</h1>
+                <h3>{{ UserDetails.username }}'s Trades</h3>
+                <h4>All trades:</h4>
+                {% for h in history%}
+                    {% if h.type == "sell" %}
+                        <div class="alert alert-danger">
+                            Coin: {{h.Cryptocurrency}}   Quantity:{{h.quantity}}  action:{{h.type}}
+                        </div>
+                    {% endif %}
+                    {% if h.type == "buy" %}
+                        <div class="alert alert-success">
+                            Coin: {{h.Cryptocurrency}}   Quantity:{{h.quantity}}  action:{{h.type}}
+                        </div>
+                    {% endif %}
                 {% endfor %}
-                <h4></h4>
-                
                 
             </div>
         </div>    

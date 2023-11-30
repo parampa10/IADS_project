@@ -53,7 +53,7 @@ def signup(request):
             return redirect('/login/login')
         else:
             print("wrong")
-    else:
+    else:#get request
         form = RegisterForm()
         return render(request,'signup.html',{'form':form})
 
@@ -130,6 +130,7 @@ def buy(request):
                     cryptocurrency=cryptocurrency,
                     quantity=quantity,
                     total_amount=total_amount,
+                    type="buy"
                 )
                 user = UserDetails.objects.get(id=user_id)
 
@@ -200,14 +201,24 @@ def sell(request):
                     del cryptocurrencies[cryptocurrency]
 
                 user.cryptocurrencies = cryptocurrencies
-
+                
                 # print(user.cryptocurrencies)
                 user_wallet.save()
                 user.save()
 
-                return JsonResponse({'success': True})
+                Purchase.objects.create(
+                    user_id=user_id,
+                    cryptocurrency=cryptmod,
+                    quantity=quantity,
+                    total_amount=total_amount,
+                    type="sell"
+                )
+
+                msg="Coin Sold"
+                return render(request, 'sell.html', {'msg_success':msg,"user": user, 'form':form ,  'id': "sell"})
             else:
-                return JsonResponse({'success': False})
+                msg="Enter Proper Quantity"
+                return render(request, 'sell.html', {'msg_fail':msg,"user": user, 'form':form ,  'id': "sell"})
 
         else:
             return redirect('index')
@@ -223,6 +234,23 @@ def sell(request):
 
         return render(request, 'sell.html', {'UserDetails':user_wallet.user,'crypto_choices_json': crypto_choices_json,"user": user, 'form':form ,  'id': "sell"})
 
+
+def history(request):
+    
+    user_id = request.session.get('_user_id')
+    # Check if the user ID is present in the session
+    if user_id:
+        # Retrieve the user based on the user ID
+        user = UserDetails.objects.get(pk=user_id)
+
+        # Filter transactions for the current user
+        history = Purchase.objects.filter(user=user).order_by('-timestamp')
+    
+        return render(request, 'payment_history.html', {'history': history, "id": "purchase-history"})
+    else:
+        msg="Please Login in First!"
+        # Handle the case when the user ID is not present in the session (you can redirect to a login page or display an error message)
+        return render(request, 'login.html',{'msg':msg})
 
 def mycoins(request):
 
@@ -242,8 +270,7 @@ def mycoins(request):
 
         coins_list=user.cryptocurrencies.items()
 
-        for i in user.cryptocurrencies:
-            print(type(user.cryptocurrencies))
+        
 
         return render(request, 'mycoins.html', {'crypto_choices_json': crypto_choices_json,'coins_list':coins_list,"user": user,'id': "sell",'UserDetails':user_wallet.user})
 
